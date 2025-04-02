@@ -1,107 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manager Dashboard</title>
 </head>
 <body>
     <h1>Manager Dashboard</h1>
 
-    <!-- Onboard Creator Form -->
-    <h2>Onboard New Creator</h2>
-    <form action="{{ url_for('onboard_creator') }}" method="POST">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-
-        <label for="cpm">CPM (₹):</label>
-        <input type="number" id="cpm" name="cpm" min="15" max="100" required>
-
-        <label for="email">Email (Optional):</label>
-        <input type="email" id="email" name="email">
-
-        <button type="submit">Onboard Creator</button>
-    </form>
- <hr>
-
-    <!-- Creators List -->
-    <h2>Creators List</h2>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>CPM (₹)</th>
-            <th>Email</th>
-            <th>Submission Link</th>
-            <th>Dashboard Link</th>
-            <th>Actions</th>
-        </tr>
-        {% for creator in creators %}
-        <tr>
-            <td>{{ creator[0] }}</td>
-            <td>{{ creator[1] }}</td>
-            <td>{{ creator[2] }}</td>
-            <td>{{ creator[3] }}</td>
-            <td><a href="{{ creator[4] }}" target="_blank">Submission Link</a></td>
-            <td><a href="{{ creator[5] }}" target="_blank">Dashboard Link</a></td>
-            <td>
-                <form method="POST" action="{{ url_for('delete_creator', id=creator[0]) }}">
-                    <button type="submit">Remove</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <hr>
-
-    <!-- Submissions List -->
-    <h2>Submissions List</h2>
-    <!-- Filters for Submissions -->
-    <form method="GET" action="{{ url_for('manager') }}">
-        <select name="status">
-            <option value="All">All</option>
-            <option value="Pending">Pending</option>
-            <option value="Approved">Approved</option>
-            <option value="Rejected">Rejected</option>
-        </select>
-        <button type="submit">Filter</button>
-    </form>
-    
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Reel Link</th>
-            <th>Timestamp</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-        {% for submission in submissions %}
-        <tr>
-            <td>{{ submission[0] }}</td>
-            <td>{{ submission[1] }}</td>
-            <td>{{ submission[2] }}</td>
-            <td>{{ submission[3] }}</td>
-            <td>
-                {% if submission[3] == 'Pending' %}
-                    <form method="POST" action="{{ url_for('approve', id=submission[0]) }}">
-                        <button type="submit">Approve</button>
-                    </form>
-                    <form method="POST" action="{{ url_for('reject', id=submission[0]) }}">
-                        <input type="text" name="reason" placeholder="Rejection Reason" required>
-                        <button type="submit">Reject</button>
-                    </form>
-                {% elif submission[3] in ['Approved', 'Rejected'] %}
-                    <form method="POST" action="{{ url_for('rereview', id=submission[0]) }}">
-                        <button type="submit">Rereview</button>
-                    </form>
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-<h2>Upload Views CSV</h2>
-<a href="{{ url_for('upload_csv') }}">Upload CSV File</a>
-
+    <!-- Display submissions -->
+    <h2>Submissions</h2>
+    {% if submissions %}
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Link</th>
+                <th>Submission Time</th>
+                <th>Status</th>
+            </tr>
+            {% for submission in submissions %}
+            <tr>
+                <td>{{ submission[0] }}</td>
+                <td>{{ submission[1] }}</td>
+                <td>{{ submission[2] }}</td>
+                <td>{{ submission[3] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No submissions found.</p>
+    {% endif %}
 </body>
 </html>
