@@ -121,7 +121,6 @@ def create_database():
         )
     ''')
 
-    # Adding the announcements table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS announcements (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -130,7 +129,6 @@ def create_database():
         )
     ''')
 
-    # Adding the notifications table (New Addition)
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS notifications (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -143,7 +141,7 @@ def create_database():
 
     conn.commit()
     conn.close()
-
+    
 @app.route('/onboard_creator', methods=['POST'])
 def onboard_creator():
     username = request.form['username']
