@@ -378,7 +378,11 @@ def send_announcement():
 
     return redirect(url_for('manager'))
 
-
 if __name__ == '__main__':
-    create_database()  # Ensure database and tables are created before running
-    app.run(debug=True)
+    if not os.path.exists('submissions.db'):
+        print("Database not found. Creating new database...")
+        create_database()
+    else:
+        print("Database already exists. Skipping creation step.")
+
+    app.run(host='0.0.0.0', port=10000)
