@@ -182,7 +182,8 @@ def onboard_creator():
 
 @app.route('/')
 def home():
-    return render_template('submit.html')
+    return redirect(url_for('manager'))
+
 
 @app.route('/success')
 def success():
