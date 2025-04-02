@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Creator Dashboard</title>
+</head>
+<body>
+    <h1>Creator Dashboard</h1>
+
+    <h2>Announcements</h2>
+    <ul>
+        {% for announcement in announcements %}
+            <li><strong>{{ announcement[1] }}</strong>: {{ announcement[0] }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
